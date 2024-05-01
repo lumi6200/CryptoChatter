@@ -148,8 +148,8 @@ app.get("/post/:id", async (req, res) => {
     const id = req.params.id;
     const post = await getSpecificPost(id);
     const replies = await getRepliesByPostId(id);
-    console.log("Post: \n", post);
-    console.log("Replies: \n", replies);
+    // console.log("Post: \n", post);
+    // console.log("Replies: \n", replies);
     res.render("post.ejs", {
         post, replies
     });
@@ -184,6 +184,41 @@ app.post("/reply", async (req, res) => {
         console.log("Error inserting reply into table 'replies': ", error.message);
     }
 })
+
+app.get("/update/:id", async (req, res) => {
+    try {
+        const post_id = req.params.id;
+        const post = await getSpecificPost(post_id);
+        console.log("Fetched data from table 'posts' for update page successfully.");
+        console.log(post);
+        res.render("update.ejs", { post });
+    } catch (error) {
+        console.log("Error fetching data from table 'posts': ", error.message);
+    }
+})
+
+app.post("/update-post", async (req, res) => {
+    try {
+        const post_id = req.body.post_id;
+        const title = req.body.title;
+        const content = req.body.content;
+
+        if (title)  {
+            db.query(`UPDATE posts SET title = $1 WHERE id = $2`, [title, post_id]);
+            console.log("success: update title on 'posts'");
+        }
+        if (content) {
+            db.query(`UPDATE posts SET content = $1 WHERE id = $2`, [content, post_id]);
+            console.log("success: update content on 'posts'");
+        }
+
+        res.redirect(`/post/${post_id}`);
+    } catch (error) {
+        
+    }
+})
+
+app.post("update ")
 
 app.listen(port, () => {
     console.log(`Listing on port ${port}.`);
