@@ -1,0 +1,74 @@
+<%- include("partials/header.ejs") %> <!-- Include shared header -->
+
+    <!-- Back to the main page -->
+
+    <%- include("partials/back.ejs") %>
+
+
+    <div class="card"> <!-- Card containing the post and replies -->
+        <div class="card-body">
+            <h1 class="d-flex align-items-center"> <!-- Post title with icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-person-circle mr-2" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path fill-rule="evenodd"
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                </svg>
+                <%= post.title %>
+            </h1>
+
+            <p>
+                <%= post.content %>
+            </p> <!-- Post content -->
+
+            <div class="d-flex flex-row-reverse">
+                <a href="#" style="text-decoration: none; color: white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path
+                            d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                    </svg>
+                </a>
+            </div>
+
+            <hr class="orange"> <!-- Separator between post content and replies -->
+
+            <h4>Replies</h4> <!-- Section for replies -->
+            <% if (replies && replies.length> 0) { %> <!-- If there are replies -->
+                <% replies.forEach((reply)=> { %> <!-- Loop through replies -->
+                    <p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                            class="bi bi-person-circle mr-2" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                            <path fill-rule="evenodd"
+                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                        </svg>
+                        <%= reply.reply %> <!-- Display reply content -->
+                    </p>
+                    <% }); %>
+                        <% } else { %> <!-- If there are no replies -->
+                            <p>No replies yet.</p>
+                            <% } %>
+
+                                <!-- Form to add a new reply -->
+                                <form action="/reply" method="post"> <!-- Endpoint to handle reply submissions -->
+                                    <input type="hidden" name="post_id" value="<%= post.id %>">
+                                    <!-- Pass the post's ID -->
+
+                                    <div class="form-group"> <!-- Reply input field -->
+                                        <label for="reply">Add a Reply:</label>
+                                        <textarea name="reply" class="form-control" rows="3" required
+                                            placeholder="Write your reply here"></textarea> <!-- Reply input -->
+                                    </div>
+
+                                    <div class="d-flex flex-row-reverse">
+                                        <button type="submit" class="btn">Submit Reply</button>
+                                    </div>
+
+                                    <!-- Submit button -->
+                                </form>
+
+        </div>
+    </div>
+
+<%- include ("partials/footer.ejs"); %>

@@ -1,0 +1,41 @@
+<%- include("partials/header.ejs") %> <!-- Include any shared header or partials -->
+
+<%- include("partials/back.ejs") %>
+
+    <div class="card"> <!-- Card to contain the entire form -->
+        <div class="card-body">
+            <h2>Create a New Blog Post</h2> <!-- Form title -->
+            <hr class="orange">
+
+            <!-- Form to create a new blog post -->
+            <form action="/posts" method="post"> <!-- POST endpoint for form submission -->
+
+                <!-- Title field -->
+                <div class="form-group">
+                    <label for="title">Title:</label> <!-- Label for the title -->
+                    <input type="text" name="title" id="title" class="form-control" required
+                        placeholder="Enter the post title" autofocus> <!-- Input for the title -->
+                </div>
+
+                <!-- Content field -->
+                <div class="form-group">
+                    <label for="content">Content:</label> <!-- Label for the content -->
+                    <textarea name="content" id="content" class="form-control" rows="6" required
+                        placeholder="Enter the content for the post"></textarea> <!-- Textarea for content -->
+                </div>
+
+                <!-- Submit button -->
+                <div class="d-flex flex-row-reverse">
+                    <button type="submit" class="btn">Create Post
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-plus-circle-fill  ml-1" viewBox="0 0 16 16">
+                        <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                    </svg></button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+
+<%- include ("partials/footer.ejs"); %>
