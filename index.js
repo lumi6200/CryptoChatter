@@ -11,7 +11,7 @@ app.use(express.static("public"));
 const db = new pg.Client({
     user: "postgres",
     host: "localhost",
-    database: "cryptochatter",
+    database: "cryptochatter", // setup the db first
     password: "password", // adjust the password
     port: 5432,
 });
@@ -139,6 +139,8 @@ async function getRepliesByPostId(id) {
 app.get("/", async (req, res) => {
     const posts = await getPosts();
     const replies = await getReplies();
+    // console.log("posts: ", posts);
+    console.log("replies: ", replies);
     res.render("index.ejs", {
         posts, replies
     });
@@ -218,7 +220,36 @@ app.post("/update-post", async (req, res) => {
     }
 })
 
-app.post("update ")
+app.post("/delete-post", async (req, res) => {
+    try {
+        const id = req.body.post_id;
+        console.log("ID to delete: ", id);
+        if (typeof id === 'undefined') {
+            console.log("id undefined");
+        }
+        await db.query(`DELETE FROM posts WHERE id = $1`, [id]);
+        console.log("success delete");
+        res.redirect("/");
+    } catch (error) {
+        console.log("error delete: ", error.message);        
+    }
+})
+
+app.post("/delete-reply", async (req, res) => {
+    try {
+        const reply_id = req.body.reply_id;
+        const post_id = req.body.post_id;
+        if (typeof reply_id === 'undefined') {
+            console.log("reply id undefined bro")
+            res.redirect(`/post/${post_id}`);
+        }
+        await db.query(`DELETE FROM replies WHERE id = $1`, [reply_id]);
+        console.log("success delete reply");
+        res.redirect(`/post/${post_id}`);
+    } catch (error) {
+        console.log("error delete reply: ", error.message);
+    }
+})
 
 app.listen(port, () => {
     console.log(`Listing on port ${port}.`);
